@@ -1,11 +1,13 @@
 import { HttpException, Injectable } from '@nestjs/common';
+import { CreateCarDto } from 'src/dto/car.dto';
 import { api } from 'src/libs/axios.lib';
+import { QueueService } from 'src/libs/queue.lib';
 @Injectable()
 export class CarService {
   private token: string;
   private refresh_token: string;
 
-  constructor() {}
+  constructor(private readonly queueService: QueueService) {}
 
   async onModuleInit() {
     await this.authenticate();
@@ -61,11 +63,35 @@ export class CarService {
         headers: { Authorization: `Bearer ${this.token}` },
         params: queries,
       });
-      console.log(response.data);
 
       if (response.data.paginacao.total === 0) {
         throw new HttpException('Nenhum Carro encontrado', 404);
       }
+
+      return response.data;
+    } catch (error) {
+      throw new HttpException(
+        error.message ?? 'Internal Error',
+        error.status ?? 500,
+      );
+    }
+  }
+
+  async create(dto: CreateCarDto) {
+    try {
+      const response = await api.post<BHUT.Create>(
+        '/carro',
+        { ...dto },
+        { headers: { Authorization: `Bearer ${this.token}` } },
+      );
+
+      if (response.status !== 200) {
+        throw new HttpException(response.data.errors[0].message, 400);
+      }
+
+      const message = { car_id: response.data.id, data_hora_criacao: new Date() };
+
+      await this.queueService.publishMessage(message);
 
       return response.data;
     } catch (error) {

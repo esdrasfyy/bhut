@@ -11,7 +11,7 @@ declare namespace BHUT {
       },
     ];
   }
-  
+
   interface GetQueries {
     ativo: boolean;
     pagina: number;
@@ -36,6 +36,16 @@ declare namespace BHUT {
         atualizadoEm: Date;
       },
     ];
+    errors?: [
+      {
+        code: string;
+        message: string;
+      },
+    ];
+  }
+
+  interface Create {
+    id?: string;
     errors?: [
       {
         code: string;

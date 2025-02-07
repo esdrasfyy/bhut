@@ -1,7 +1,22 @@
-import { Controller, Get, Query } from '@nestjs/common';
-import { ApiOperation, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
+import {
+  Body,
+  Controller,
+  Get,
+  Post,
+  Query,
+  UsePipes,
+  ValidationPipe,
+} from '@nestjs/common';
+import {
+  ApiBody,
+  ApiOperation,
+  ApiQuery,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { CarService } from './car.service';
 import * as docs from 'src/docs/car.doc';
+import { CreateCarDto } from 'src/dto/car.dto';
 
 @ApiTags('Carros')
 @Controller('api')
@@ -49,5 +64,33 @@ export class CarController {
   })
   async getCars(@Query() queries: BHUT.GetQueries) {
     return await this.carService.get(queries);
+  }
+
+  @Post('car')
+  @ApiOperation({
+    summary: 'Cadastrar um novo carro',
+    description:
+      'Cria um novo carro na API externa e retorna os dados cadastrados.',
+  })
+  @ApiResponse({
+    status: 201,
+    description: 'Carro cadastrado com sucesso.',
+    type: CreateCarDto,
+  })
+  @ApiResponse({
+    status: 400,
+    description: 'Dados inválidos no corpo da requisição.',
+  })
+  @ApiResponse({
+    status: 500,
+    description: 'Erro interno no servidor.',
+  })
+  @ApiBody({
+    type: CreateCarDto,
+    description: 'Dados do carro a ser cadastrado',
+  })
+  @UsePipes(new ValidationPipe({ whitelist: true, transform: true }))
+  async create(@Body() dto: CreateCarDto) {
+    return this.carService.create(dto);
   }
 }
