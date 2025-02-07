@@ -1,30 +1,11 @@
-FROM php:8.2-apache
+FROM node:22.11.0
 
-RUN apt-get update && apt-get install -y \
-    libpng-dev \
-    libjpeg-dev \
-    libfreetype6-dev \
-    zip \
-    git \
-    && docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-install gd pdo pdo_mysql
-
-RUN a2enmod rewrite
-
-WORKDIR /var/www/html
+WORKDIR /server
 
 COPY . .
 
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+RUN npm install
 
-RUN composer install --no-dev --optimize-autoloader
+RUN npm run build
 
-RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
-
-COPY run.sh /usr/local/bin/run.sh
-
-RUN chmod +x /usr/local/bin/run.sh
-
-ENTRYPOINT ["sh", "/usr/local/bin/run.sh"]
-
-EXPOSE 8000
+CMD ["npm", "start"]

@@ -1,8 +1,8 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import dotenv from 'dotenv';
-import cors from 'cors';
+import * as dotenv from 'dotenv';
+import * as cors from 'cors';
 
 async function bootstrap() {
   dotenv.config();
@@ -16,7 +16,7 @@ async function bootstrap() {
     )
     .setVersion('0.0.1')
     .addTag(
-      'Car',
+      'Carros',
       'Endpoints related to car management, including adding and retrieving items.',
     )
     .setContact(
