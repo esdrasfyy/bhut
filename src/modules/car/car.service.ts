@@ -89,9 +89,7 @@ export class CarService {
         throw new HttpException(response.data.errors[0].message, 400);
       }
 
-      const message = { car_id: response.data.id, data_hora_criacao: new Date() };
-
-      await this.queueService.publishMessage(message);
+      await this.queueService.publishMessage({ car_id: response.data.id, data_hora_criacao: new Date() });
 
       return response.data;
     } catch (error) {
