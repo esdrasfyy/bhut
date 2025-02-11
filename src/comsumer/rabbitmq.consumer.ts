@@ -1,8 +1,11 @@
 import { Injectable, OnModuleInit } from '@nestjs/common';
 import * as amqp from 'amqplib';
+import { LogRepository } from 'src/repositories/log/log.repository';
 
 @Injectable()
 export class RabbitMQConsumer implements OnModuleInit {
+  constructor(private readonly logRepostory: LogRepository) {}
+
   private readonly queueName = 'car_creation_queue';
   private connection: amqp.Connection;
   private channel: amqp.Channel;
@@ -13,23 +16,14 @@ export class RabbitMQConsumer implements OnModuleInit {
 
   async connect() {
     try {
-      this.connection = await amqp.connect(
-        process.env.RABBITMQ_URL || 'amqp://localhost',
-      );
+      this.connection = await amqp.connect(process.env.RABBITMQ_URL);
       this.channel = await this.connection.createChannel();
       await this.channel.assertQueue(this.queueName, { durable: true });
 
-      console.log(`✅ RabbitMQ Consumer conectado na fila: ${this.queueName}`);
-
       this.channel.consume(this.queueName, async (message) => {
         if (message) {
-          const content = JSON.parse(message.content.toString());
-          console.log('📩 Mensagem recebida:', content);
-
-          // Processa os dados da mensagem recebida
-          await this.processMessage(content);
-
-          // Confirma a mensagem como processada
+          const dto = JSON.parse(message.content.toString()) as Log.Create;
+          await this.processMessage(dto);
           this.channel.ack(message);
         }
       });
@@ -38,12 +32,8 @@ export class RabbitMQConsumer implements OnModuleInit {
     }
   }
 
-  async processMessage(content: any) {
-    console.log('📌 Processando mensagem...', content);
-
-    // Simulação do envio de webhook
+  async processMessage(dto: Log.Create) {
+    await this.logRepostory.create(dto);
     console.log('🔔 Enviando webhook para notificar novo carro criado...');
-
-    // Aqui você pode chamar um serviço para salvar logs no MongoDB
   }
 }

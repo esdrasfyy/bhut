@@ -19,6 +19,10 @@ async function bootstrap() {
       'Carros',
       'Endpoints related to car management, including adding and retrieving items.',
     )
+    .addTag(
+      'Logs',
+      'Endpoints related to logs management, including adding and retrieving items.',
+    )
     .setContact(
       'Creator',
       'contatoesdrasoficial@gmail.com',

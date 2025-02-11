@@ -8,11 +8,11 @@ export class Log {
   @Prop({ required: true })
   car_id: string;
 
-  @Prop({ required: true })
+  @Prop({ required: true, default: Date.now })
   data_hora_criacao: Date;
 
-  @Prop({ required: false })
-  data_hora_processamento?: Date;
+  @Prop({ required: true })
+  data_hora_processamento: Date;
 }
 
 export const LogSchema = SchemaFactory.createForClass(Log);

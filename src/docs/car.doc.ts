@@ -1,5 +1,26 @@
 import { ApiProperty } from '@nestjs/swagger';
 
+export class CarCreateBodySwagger {
+  @ApiProperty({ description: 'Preço do carro.', example: 10000 })
+  preco: number;
+
+  @ApiProperty({ description: 'Ano de fabricação do carro.', example: 2020 })
+  anoFabricacao: number;
+
+  @ApiProperty({ description: 'Nome do carro.', example: 'Fusca' })
+  nome: string;
+
+  @ApiProperty({ description: 'Marca do carro.', example: 'Volkswagen' })
+  marca: string;
+}
+
+export class CarCreateResponseSwagger {
+  @ApiProperty({
+    description: 'O ID único do carro.',
+    example: '0e8352d9-467a-4cb8-aabf-cc6436df41ea',
+  })
+  id: string;
+}
 class PaginacaoSwagger {
   @ApiProperty({ description: 'Número da página atual.', example: 1 })
   pagina: number;

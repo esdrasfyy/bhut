@@ -13,14 +13,10 @@ export class QueueService {
     await this.channel.assertQueue(this.queueName, { durable: true });
   }
 
-  async publishMessage(message: any) {
+  async publishMessage(dto: Log.Create) {
     if (!this.channel) await this.connect();
-    this.channel.sendToQueue(
-      this.queueName,
-      Buffer.from(JSON.stringify(message)),
-      {
-        persistent: true,
-      },
-    );
+    this.channel.sendToQueue(this.queueName, Buffer.from(JSON.stringify(dto)), {
+      persistent: true,
+    });
   }
 }

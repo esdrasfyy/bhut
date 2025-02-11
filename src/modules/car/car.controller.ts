@@ -75,7 +75,7 @@ export class CarController {
   @ApiResponse({
     status: 201,
     description: 'Carro cadastrado com sucesso.',
-    type: CreateCarDto,
+    type: docs.CarCreateResponseSwagger,
   })
   @ApiResponse({
     status: 400,
@@ -86,7 +86,7 @@ export class CarController {
     description: 'Erro interno no servidor.',
   })
   @ApiBody({
-    type: CreateCarDto,
+    type: docs.CarCreateBodySwagger,
     description: 'Dados do carro a ser cadastrado',
   })
   @UsePipes(new ValidationPipe({ whitelist: true, transform: true }))

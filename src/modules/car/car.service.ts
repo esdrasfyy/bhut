@@ -70,10 +70,7 @@ export class CarService {
 
       return response.data;
     } catch (error) {
-      throw new HttpException(
-        error.message ?? 'Internal Error',
-        error.status ?? 500,
-      );
+      throw new HttpException( error.message ?? 'Internal Error', error.status ?? 500);
     }
   }
 
@@ -89,14 +86,11 @@ export class CarService {
         throw new HttpException(response.data.errors[0].message, 400);
       }
 
-      await this.queueService.publishMessage({ car_id: response.data.id, data_hora_criacao: new Date() });
+      await this.queueService.publishMessage({ car_id: response.data.id, data_hora_processamento: new Date() });
 
       return response.data;
     } catch (error) {
-      throw new HttpException(
-        error.message ?? 'Internal Error',
-        error.status ?? 500,
-      );
+      throw new HttpException( error.message ?? 'Internal Error', error.status ?? 500 );
     }
   }
 }
