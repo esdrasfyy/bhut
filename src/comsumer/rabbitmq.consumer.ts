@@ -1,6 +1,7 @@
 import { Injectable, OnModuleInit } from '@nestjs/common';
 import * as amqp from 'amqplib';
 import { LogRepository } from 'src/repositories/log/log.repository';
+import axios from 'axios';
 
 @Injectable()
 export class RabbitMQConsumer implements OnModuleInit {
@@ -34,6 +35,8 @@ export class RabbitMQConsumer implements OnModuleInit {
 
   async processMessage(dto: Log.Create) {
     await this.logRepostory.create(dto);
-    console.log('🔔 Enviando webhook para notificar novo carro criado...');
+
+    await axios.post(process.env.WEBHOOK_URL, { dto });
+
   }
 }
