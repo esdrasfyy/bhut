@@ -1,4 +1,6 @@
-import { HttpException, Injectable } from '@nestjs/common';
+import { CACHE_MANAGER } from '@nestjs/cache-manager';
+import { HttpException, Inject, Injectable } from '@nestjs/common';
+import { Cache } from 'cache-manager';
 import { CreateCarDto } from 'src/dto/car.dto';
 import { api } from 'src/libs/axios.lib';
 import { QueueService } from 'src/libs/queue.lib';
@@ -7,7 +9,10 @@ export class CarService {
   private token: string;
   private refresh_token: string;
 
-  constructor(private readonly queueService: QueueService) {}
+  constructor(
+    private readonly queueService: QueueService,
+    @Inject(CACHE_MANAGER) private cacheManager: Cache,
+  ) {}
 
   async onModuleInit() {
     await this.authenticate();
@@ -59,6 +64,13 @@ export class CarService {
 
   async get(queries: BHUT.GetQueries) {
     try {
+      const cacheKey = `cars-list-${JSON.stringify(queries)}`;
+
+      const cachedData = await this.cacheManager.get(cacheKey);
+      if (cachedData) {
+        return cachedData;
+      }
+
       const response = await api.get<BHUT.Get>('/carro', {
         headers: { Authorization: `Bearer ${this.token}` },
         params: queries,
@@ -68,9 +80,14 @@ export class CarService {
         throw new HttpException('Nenhum Carro encontrado', 404);
       }
 
+      await this.cacheManager.set(cacheKey, response.data);
+
       return response.data;
     } catch (error) {
-      throw new HttpException( error.message ?? 'Internal Error', error.status ?? 500);
+      throw new HttpException(
+        error.message ?? 'Internal Error',
+        error.status ?? 500,
+      );
     }
   }
 
@@ -86,11 +103,17 @@ export class CarService {
         throw new HttpException(response.data.errors[0].message, 400);
       }
 
-      await this.queueService.publishMessage({ car_id: response.data.id, data_hora_processamento: new Date() });
+      await this.queueService.publishMessage({
+        car_id: response.data.id,
+        data_hora_processamento: new Date(),
+      });
 
       return response.data;
     } catch (error) {
-      throw new HttpException( error.message ?? 'Internal Error', error.status ?? 500 );
+      throw new HttpException(
+        error.message ?? 'Internal Error',
+        error.status ?? 500,
+      );
     }
   }
 }
