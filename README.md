@@ -1,99 +1,115 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# Desafio BHUT - Software Enginner
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+<div style="text-align: center;">
+    <img src="https://lh3.googleusercontent.com/p/AF1QipPf_MO-dn_w9RqtoX1n2ET4hZ3iQn7ghrSD0n1z=s680-w680-h510" alt="Arte Arena Logo" style="max-width: 200px; height: auto;">
+</div>
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## Sobre o Desafio
 
-## Description
+Este repositório contém a implementação de uma **API REST** desenvolvida em **Nest.js** (TypeScript), que interage com uma API externa e utiliza um sistema de **mensageria** para comunicação assíncrona. O projeto segue boas práticas de desenvolvimento, garantindo escalabilidade, organização e testes de integração.
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+A **BHUT** é uma empresa focada em soluções tecnológicas para o setor automotivo, oferecendo ferramentas inovadoras para gerenciamento e automação de processos. O objetivo deste desafio foi aplicar as melhores práticas de desenvolvimento para criar um sistema robusto e eficiente, alinhado às necessidades da empresa.
+<br/>
 
-## Project setup
+---
 
-```bash
-$ npm install
-```
+### Funcionalidades
 
-## Compile and run the project
+- Integração com a API externa da BHUT para cadastro e listagem de carros
+- Endpoint para listar todos os carros da API externa (GET /api/car)
+- Endpoint para cadastrar um novo carro (POST /api/car)
+- Publicação de mensagens em uma fila RabbitMQ ao criar um novo carro
+- Consumidor de fila para processar mensagens e enviar webhook de notificação
+- Registro de logs em um banco MongoDB, armazenando as chamadas da API
+- Endpoint para consulta dos logs armazenados (GET /api/logs)
+- Dockerização da aplicação para facilitar a execução em ambientes isolados
+- Integração com Docker para escalabilidade
+- Cacheamento de dados para otimizar desempenho (Redis)
 
-```bash
-# development
-$ npm run start
+---
 
-# watch mode
-$ npm run start:dev
+### Tecnologias Utilizadas
 
-# production mode
-$ npm run start:prod
-```
+- **Backend**: Node.js, Nest.js, MongoDB, Redis...
+- **Outros**: Git, Docker
 
-## Run tests
+---
 
-```bash
-# unit tests
-$ npm run test
+## Como Rodar o Projeto
 
-# e2e tests
-$ npm run test:e2e
+### Pré-Requisitos
 
-# test coverage
-$ npm run test:cov
-```
+Antes de rodar o projeto, certifique-se de que você tem as seguintes ferramentas instaladas:
 
-## Deployment
+- **Docker** (com Docker Compose)
+- **Node.js** (para o frontend)
+- **npm** (gerenciador de pacotes do Node.js)
+- **MongoDB** (banco de dados não relacional)
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+---
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+### 1. Clonar o Repositório
 
-```bash
-$ npm install -g mau
-$ mau deploy
-```
+Primeiro, clone o repositório para o seu ambiente local:
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+> git clone https://github.com/esdrasfyy/bhut.git
 
-## Resources
+---
 
-Check out a few resources that may come in handy when working with NestJS:
+### 2. Copiar o Arquivo `.env`
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+Antes de iniciar o projeto, copie o arquivo de ambiente adequado para o seu uso e renomeie-o para `.env`.
 
-## Support
+- Para Docker: Copie o arquivo `.env.docker` para `.env`.
+- Para ambiente local: Copie o arquivo `.env.local` para `.env`.
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+Isso é essencial para garantir que todas as variáveis de ambiente estejam corretamente configuradas.
 
-## Stay in touch
+---
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+### 3. Rodar o Projeto
 
-## License
+#### 3.1 Com Docker
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+Caso você queira rodar o projeto com Docker, siga os passos abaixo:
+
+1. **Build** (criação do ambiente Docker):
+
+   > docker-compose up --build
+
+2. **Cuidado**:
+
+   - Certifique-se de que o **Docker** e o **Docker Compose** estão corretamente instalados.
+   - Verifique se as portas **27017** (MongoDB), **3000** (Server) e **5672 e 15672** (RabbitMQ) estão disponíveis em sua máquina e não estão sendo usadas por outros processos.
+
+---
+
+#### 3.2 Sem Docker
+
+Se preferir rodar o projeto sem Docker, siga as instruções separadas para o **Frontend** e **Backend**.
+
+**Frontend**
+
+1. Instale as dependências do projeto:
+
+   > npm install --legacy-peer-deps
+
+2. Compile o projeto:
+
+   > npm run build
+
+3. Inicie o servidor de desenvolvimento:
+
+   > npm start
+
+O server estará disponível em `http://localhost:3000`.
+
+---
+
+#### 4 Documentação
+
+> http://localhost:3000/docs
+
+---
+
+Caso precise de mais informações ou tenha dúvidas sobre o desenvolvimento deste projeto, sinta-se à vontade para entrar em contato!
